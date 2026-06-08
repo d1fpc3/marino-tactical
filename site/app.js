@@ -135,7 +135,7 @@
           '<path d="M12 21 L20 21 L17 41 L9 41 Z" fill="#1a1f23" stroke="#39424a" stroke-width="0.6"/>' +
           '<path d="M12 24 L18 24 M11.4 27 L17.4 27 M10.8 30 L16.8 30 M10.2 33 L15.8 33" stroke="#39424a" stroke-width="0.7"/>' +
           // trigger
-          '<path d="M22 22 L22 27 L24 27 Z" fill="#ff6a13"/>' +
+          '<path d="M22 22 L22 27 L24 27 Z" fill="#6f7d49"/>' +
         '</g>' +
       '</svg>';
     document.body.appendChild(pistol);
