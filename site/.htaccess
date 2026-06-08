@@ -1,0 +1,18 @@
+# Marino Tactical | caching policy
+# HTML must always be revalidated so version-stamped asset links (styles.css?v=NNN)
+# are picked up immediately after a deploy. CSS/JS can cache long because the ?v=
+# query string busts them whenever they change.
+
+<IfModule mod_headers.c>
+  # Never cache HTML
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # Long-cache static assets (busted via ?v= query string on change)
+  <FilesMatch "\.(css|js|svg|woff2?|png|jpe?g|webp|ico)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
