@@ -238,14 +238,20 @@ p { margin: 0 0 1.1em; }
 .nav { display: flex; align-items: center; justify-content: space-between; height: var(--header-h); }
 .brand { display: flex; align-items: center; gap: 0.7rem; }
 .brand-mark {
-  width: 44px; height: 44px; display: grid; place-items: center;
-  color: var(--bone); border-radius: var(--radius); border: 1px solid var(--steel);
+  width: 46px; height: 46px; display: grid; place-items: center;
+  border-radius: 50%;
+  flex: none;
+}
+/* real Marino Tactical Spartan-badge logo (clip square corners to the round badge) */
+.brand-mark img { width: 112%; height: 112%; object-fit: cover; display: block; border-radius: 50%; }
+/* fallback text mark (if image missing) keeps old camo look */
+.brand-mark.is-text {
+  border-radius: var(--radius); border: 1px solid var(--steel);
+  color: var(--bone); font-family: var(--font-stencil); font-size: 1.15rem;
   background:
     radial-gradient(ellipse 30px 20px at 30% 30%, var(--camo-green) 0%, transparent 60%),
     radial-gradient(ellipse 26px 24px at 75% 70%, var(--camo-brown) 0%, transparent 60%),
-    radial-gradient(ellipse 24px 20px at 60% 20%, var(--camo-tan) 0%, transparent 55%),
     var(--camo-dark);
-  font-family: var(--font-stencil); font-size: 1.15rem;
 }
 .brand-name { font-family: var(--font-display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; font-size: 1.1rem; color: #fff; line-height: 1; }
 .brand-name span { display: block; font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.3em; color: var(--orange); margin-top: 4px; }
@@ -547,6 +553,21 @@ p { margin: 0 0 1.1em; }
   background: linear-gradient(150deg, var(--gun-2), var(--black)), radial-gradient(circle at 30% 25%, rgba(92,103,64,0.25), transparent 60%);
   display: grid; place-items: center;
 }
+/* real instructor photo (Kirk Marino, deployed) */
+.instructor-photo {
+  position: relative; margin: 0; border: 1px solid var(--gun-3); border-radius: var(--radius);
+  overflow: hidden; background: var(--black);
+}
+.instructor-photo img {
+  width: 100%; height: auto; display: block;
+  filter: grayscale(0.15) contrast(1.05) brightness(0.96);
+}
+.instructor-photo figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--bone); padding: 0.7rem 0.9rem;
+  background: linear-gradient(0deg, rgba(0,0,0,0.85), transparent);
+}
 .split-media .seal { text-align: center; }
 .seal .seal-mark { font-family: var(--font-stencil); font-size: 3.4rem; color: var(--orange); }
 .seal .seal-sub { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.78rem; color: var(--fog); }
@@ -753,13 +774,12 @@ body, .site-header, .card, .section--panel, .btn, .hero-bg, .nav-links a, .field
 /* stencil accent word goes red in USA mode */
 :root[data-theme="usa"] .hero h1 .accent { color: var(--orange); }
 :root[data-theme="usa"] .hero h1 .accent::after { background: var(--orange); }
-/* brand mark becomes a flag chip */
-:root[data-theme="usa"] .brand-mark {
-  border-color: rgba(255,255,255,0.4); color: #fff;
+/* USA theme flag-chip override only applies to the text-fallback mark */
+:root[data-theme="usa"] .brand-mark.is-text {
+  border-color: rgba(255,255,255,0.4); color: #0a1b3d; text-shadow: 0 1px 2px rgba(255,255,255,0.6);
   background:
     linear-gradient(0deg, #b22234 0 16.6%, #fff 16.6% 33.3%, #b22234 33.3% 50%, #fff 50% 66.6%, #b22234 66.6% 83.3%, #fff 83.3% 100%);
 }
-:root[data-theme="usa"] .brand-mark { color: #0a1b3d; text-shadow: 0 1px 2px rgba(255,255,255,0.6); }
 /* price band tape becomes stripes (already via --tape) */
 
 /* off-screen sections skip rendering work (perf) */
