@@ -5,6 +5,25 @@
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
+  /* ---------------- Theme toggle (camo <-> usa, persisted) ---------------- */
+  function applyTheme(t) {
+    if (t === "usa") document.documentElement.setAttribute("data-theme", "usa");
+    else document.documentElement.removeAttribute("data-theme");
+  }
+  function currentTheme() {
+    return document.documentElement.getAttribute("data-theme") === "usa" ? "usa" : "camo";
+  }
+  document.querySelectorAll(".theme-toggle").forEach(function (tt) {
+    tt.addEventListener("click", function () {
+      var next = currentTheme() === "usa" ? "camo" : "usa";
+      applyTheme(next);
+      try { localStorage.setItem("mtt-theme", next); } catch (e) {}
+      document.querySelectorAll(".theme-toggle").forEach(function (b) {
+        b.setAttribute("aria-pressed", next === "usa" ? "true" : "false");
+      });
+    });
+  });
+
   /* ---------------- Mobile nav (full-screen overlay) ---------------- */
   var toggle = document.querySelector(".nav-toggle");
   var links = document.querySelector(".nav-links");
@@ -80,16 +99,28 @@
     document.querySelectorAll("[data-count]").forEach(function (el) { cio.observe(el); });
   }
 
-  /* ---------------- Hero tracer fire (repeating) ---------------- */
+  /* ---------------- Hero tracer fire (repeating, only while hero visible) ---------------- */
   var tracer = document.querySelector(".tracer");
-  if (tracer && !reduce) {
+  var heroEl = document.querySelector(".hero");
+  if (tracer && heroEl && fine && !reduce && "IntersectionObserver" in window) {
     var fire = function () {
-      tracer.classList.remove("fire");
-      void tracer.offsetWidth; // reflow to restart
-      tracer.classList.add("fire");
+      tracer.classList.remove("fire"); void tracer.offsetWidth; tracer.classList.add("fire");
     };
-    setTimeout(fire, 1100);
-    setInterval(fire, 6000);
+    var tInt = null;
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { if (!tInt) { fire(); tInt = setInterval(fire, 6000); } }
+        else if (tInt) { clearInterval(tInt); tInt = null; }
+      });
+    }, { threshold: 0.05 }).observe(heroEl);
+  }
+
+  /* ---------------- Pause continuous CSS animations when off-screen ---------------- */
+  if (!reduce && "IntersectionObserver" in window) {
+    var pauseIo = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { e.target.style.animationPlayState = e.isIntersecting ? "running" : "paused"; });
+    }, { threshold: 0 });
+    document.querySelectorAll(".cta-aura, .radar span").forEach(function (el) { pauseIo.observe(el); });
   }
 
   /* ---------------- Magnetic CTAs ---------------- */

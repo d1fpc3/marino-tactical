@@ -46,6 +46,42 @@
   --shadow: 0 10px 40px rgba(0,0,0,0.5);
 
   --tape: repeating-linear-gradient(45deg, var(--camo-green) 0 14px, var(--camo-dark) 14px 28px);
+
+  /* theme transition */
+  --theme-fade: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+/* =========================================================
+   PATRIOTIC (USA) THEME  |  red / white / blue, full flag
+   Toggled via <html data-theme="usa">. Overrides the vars
+   so the entire site recolors with no markup changes.
+   ========================================================= */
+:root[data-theme="usa"] {
+  --black: #081226;        /* deep navy */
+  --gun: #0a1b3d;          /* navy base */
+  --gun-2: #102a55;        /* raised panel */
+  --gun-3: #1d3e75;        /* border / hairline */
+  --steel: #3f63a8;
+  --fog: #aebfe0;          /* muted blue-grey text */
+  --bone: #ffffff;         /* primary text */
+
+  /* "camo" tone slots reused as flag tones (stars + stripes) */
+  --camo-dark: #0a1b3d;    /* navy */
+  --camo-olive: #15306a;
+  --camo-green: #b22234;   /* old-glory red */
+  --camo-tan: #ffffff;     /* white */
+  --camo-brown: #3c2a55;
+
+  --orange: #ef3340;       /* red accent (replaces bone) */
+  --orange-2: #ff4d59;     /* bright red */
+  --ink: #081226;          /* dark text on white-fill buttons */
+  --olive: #b22234;        /* red */
+  --olive-bright: #d62b3a;
+  --coyote: #ffd34e;       /* gold star */
+  --danger: #ff5247;
+  --go: #4cc46a;
+
+  --tape: repeating-linear-gradient(90deg, #b22234 0 30px, #ffffff 30px 60px);
 }
 
 * { box-sizing: border-box; }
@@ -70,7 +106,8 @@ body {
     linear-gradient(90deg, rgba(255,255,255,0.014) 1px, transparent 1px);
   background-size: 900px 700px, 760px 700px, 1000px 700px, 800px 720px, 42px 42px, 42px 42px;
   background-repeat: repeat;
-  background-attachment: fixed, fixed, fixed, fixed, scroll, scroll;
+  /* NOTE: no background-attachment:fixed — it forces a full repaint every
+     scroll frame and tanks FPS on mobile. The texture scrolls with content. */
 }
 
 img { max-width: 100%; display: block; }
@@ -596,12 +633,110 @@ p { margin: 0 0 1.1em; }
 .reveal-stagger.in > *:nth-child(5){transition-delay:.33s}
 .reveal-stagger.in > *:nth-child(6){transition-delay:.40s}
 
-/* mobile hardening */
+/* =========================================================
+   THEME TOGGLE button (in nav)
+   ========================================================= */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 0; cursor: pointer;
+  border: 1px solid var(--gun-3); border-radius: 100px; padding: 3px; background: var(--gun-2);
+  font-family: var(--font-mono); position: relative; overflow: hidden;
+}
+.theme-toggle .tt-opt {
+  font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.35rem 0.7rem; border-radius: 100px; color: var(--fog); z-index: 1; transition: color 0.3s ease;
+  min-width: 46px; text-align: center;
+}
+.theme-toggle .tt-knob {
+  position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc(50% - 3px);
+  background: var(--orange); border-radius: 100px; transition: transform 0.35s var(--ease-spring), background 0.3s ease; z-index: 0;
+}
+:root[data-theme="usa"] .theme-toggle .tt-knob { transform: translateX(100%); }
+/* active label gets dark text over the knob */
+.theme-toggle .tt-camo { color: var(--ink); }
+:root[data-theme="usa"] .theme-toggle .tt-camo { color: var(--fog); }
+:root[data-theme="usa"] .theme-toggle .tt-usa { color: #fff; }
+.theme-toggle:hover { border-color: var(--steel); }
+.nav-theme { display: flex; align-items: center; }
+/* mobile: center the toggle in the overlay menu, give it room */
+@media (max-width: 960px) {
+  .nav-theme { justify-content: center; padding: 1.4rem 0 0.4rem; opacity: 1 !important; transform: none !important; }
+  .nav-theme .theme-toggle { transform: scale(1.15); }
+}
+
+/* smooth recolor when theme flips */
+body, .site-header, .card, .section--panel, .btn, .hero-bg, .nav-links a, .field input, .field select, .field textarea {
+  transition: var(--theme-fade);
+}
+
+/* =========================================================
+   USA THEME textures (override camo backgrounds)
+   ========================================================= */
+:root[data-theme="usa"] body {
+  background-color: var(--gun);
+  /* faint star field + subtle stripe wash */
+  background-image:
+    radial-gradient(circle at 12% 12%, rgba(255,255,255,0.05) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 32% 26%, rgba(255,255,255,0.045) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 68% 18%, rgba(255,255,255,0.045) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 85% 34%, rgba(255,255,255,0.04) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.04) 0 1.5px, transparent 2px),
+    radial-gradient(ellipse 300px 200px at 85% 80%, rgba(178,34,52,0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 320px 220px at 10% 75%, rgba(60,80,150,0.22) 0%, transparent 60%),
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 180px 180px, 220px 220px, 260px 260px, 200px 200px, 300px 300px, 900px 700px, 900px 700px, 42px 42px, 42px 42px;
+}
+:root[data-theme="usa"] .hero-bg {
+  background:
+    radial-gradient(ellipse 360px 240px at 16% 24%, rgba(178,34,52,0.28) 0%, transparent 55%),
+    radial-gradient(ellipse 320px 260px at 80% 70%, rgba(40,60,140,0.4) 0%, transparent 55%),
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06) 0 2px, transparent 3px),
+    radial-gradient(circle at 62% 22%, rgba(255,255,255,0.05) 0 2px, transparent 3px),
+    radial-gradient(circle at 75% 48%, rgba(255,255,255,0.05) 0 2px, transparent 3px),
+    linear-gradient(160deg, #0a1733, #050b1c);
+  background-size: auto, auto, 90px 90px, 130px 130px, 110px 110px, auto;
+  opacity: 1;
+}
+/* red/white/blue stripe accent on the header tracer line */
+:root[data-theme="usa"] .site-header::after {
+  background: linear-gradient(90deg, #b22234 0 33%, #ffffff 33% 66%, #3c3b6e 66% 100%);
+  opacity: 0.8;
+}
+/* hero grid -> subtle white */
+:root[data-theme="usa"] .hero-grid {
+  background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+}
+/* stencil accent word goes red in USA mode */
+:root[data-theme="usa"] .hero h1 .accent { color: var(--orange); }
+:root[data-theme="usa"] .hero h1 .accent::after { background: var(--orange); }
+/* brand mark becomes a flag chip */
+:root[data-theme="usa"] .brand-mark {
+  border-color: rgba(255,255,255,0.4); color: #fff;
+  background:
+    linear-gradient(0deg, #b22234 0 16.6%, #fff 16.6% 33.3%, #b22234 33.3% 50%, #fff 50% 66.6%, #b22234 66.6% 83.3%, #fff 83.3% 100%);
+}
+:root[data-theme="usa"] .brand-mark { color: #0a1b3d; text-shadow: 0 1px 2px rgba(255,255,255,0.6); }
+/* price band tape becomes stripes (already via --tape) */
+
+/* off-screen sections skip rendering work (perf) */
+.section { content-visibility: auto; contain-intrinsic-size: auto 600px; }
+.hero, .site-header { content-visibility: visible; } /* never defer above-the-fold */
+
+/* mobile hardening + performance */
 @media (max-width: 600px) {
   body { font-size: 16px; }
   .section { padding: clamp(2.8rem,9vw,4rem) 0; }
   .btn, .nav-links a, .faq-q, .link-cards a, .map-link { min-height: 44px; }
   .hero-badge { min-width: 50%; }
+}
+/* On touch / coarse pointers, drop the continuous + GPU-heavy effects that
+   cause scroll jank. Keep the look; remove the cost. */
+@media (hover: none), (pointer: coarse) {
+  .radar { display: none; }
+  .cta-aura { animation: none; }
+  .hero-scan { display: none; }
+  .tracer { display: none; }
+  .hero-grid { display: none; }
 }
 
 /* reduced motion */
