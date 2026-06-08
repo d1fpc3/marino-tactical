@@ -5,21 +5,25 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var canHover = window.matchMedia("(hover: hover)").matches;
 
-  // Mobile nav toggle
+  // Mobile nav toggle (full-screen overlay + body scroll lock)
   var toggle = document.querySelector(".nav-toggle");
   var links = document.querySelector(".nav-links");
+  var setMenu = function (open) {
+    links.classList.toggle("open", open);
+    toggle.classList.toggle("open", open);
+    document.body.classList.toggle("nav-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  };
   if (toggle && links) {
     toggle.addEventListener("click", function () {
-      var open = links.classList.toggle("open");
-      toggle.classList.toggle("open", open);
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      setMenu(!links.classList.contains("open"));
     });
     links.querySelectorAll("a").forEach(function (a) {
-      a.addEventListener("click", function () {
-        links.classList.remove("open");
-        toggle.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-      });
+      a.addEventListener("click", function () { setMenu(false); });
+    });
+    // close on Escape
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && links.classList.contains("open")) setMenu(false);
     });
   }
 
@@ -139,6 +143,23 @@
         "Phone: " + phone + "\n" +
         "Course of interest: " + course + "\n\n" +
         message;
+      // Loading -> success state on the submit button (pattern #12)
+      var submit = form.querySelector('button[type="submit"]');
+      if (submit && !submit.dataset.label) submit.dataset.label = submit.textContent;
+      if (submit) {
+        submit.classList.add("is-loading");
+        submit.disabled = true;
+        setTimeout(function () {
+          submit.classList.remove("is-loading");
+          submit.classList.add("is-success");
+          submit.textContent = "Opening your email...";
+          setTimeout(function () {
+            submit.classList.remove("is-success");
+            submit.disabled = false;
+            submit.textContent = submit.dataset.label;
+          }, 2600);
+        }, 650);
+      }
       window.location.href =
         "mailto:" + to +
         "?subject=" + encodeURIComponent(subject) +
@@ -146,6 +167,22 @@
       var note = form.querySelector(".form-note");
       if (note) note.textContent = "Opening your email app. If nothing happens, call us at 302-542-3755.";
     });
+  }
+
+  // Subtle hero parallax (transform-only, compositor-friendly)
+  var heroBg = document.querySelector("[data-parallax]");
+  if (heroBg && !reduceMotion) {
+    var ticking = false;
+    var applyParallax = function () {
+      var y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroBg.style.transform = "translate3d(0," + y * 0.18 + "px,0)";
+      }
+      ticking = false;
+    };
+    window.addEventListener("scroll", function () {
+      if (!ticking) { requestAnimationFrame(applyParallax); ticking = true; }
+    }, { passive: true });
   }
 
   // Footer year
