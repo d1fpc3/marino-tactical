@@ -28,7 +28,7 @@
   --font-mono: "Share Tech Mono", "Courier New", monospace;
 
   --maxw: 1200px;
-  --header-h: 74px;
+  --header-h: 82px;
   --radius: 3px;
   --ease-snap: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-lux: cubic-bezier(0.77, 0, 0.175, 1);
@@ -192,15 +192,28 @@ p { margin: 0 0 1.1em; }
 .brand-name { font-family: var(--font-display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; font-size: 1.1rem; color: #fff; line-height: 1; }
 .brand-name span { display: block; font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.3em; color: var(--orange); margin-top: 4px; }
 
-.nav-links { display: flex; align-items: center; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
-.nav-links a {
-  font-family: var(--font-display); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em;
-  font-size: 0.84rem; color: var(--bone); padding: 0.4rem 0; position: relative;
+.nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; margin: 0; padding: 0; }
+.nav-links > li:not(.nav-cta) > a {
+  font-family: var(--font-display); font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em;
+  font-size: 0.82rem; color: var(--fog); padding: 0.55rem 0; position: relative; transition: color 0.2s ease;
 }
-.nav-links a::after { content: ""; position: absolute; left: 0; bottom: -2px; width: 0; height: 2px; background: var(--orange); transition: width 0.22s ease; }
-.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-.nav-links a:hover, .nav-links a.active { color: var(--orange); }
-.nav-cta { margin-left: 0.3rem; }
+/* active/hover underline tracer */
+.nav-links > li:not(.nav-cta) > a::after {
+  content: ""; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
+  background: var(--orange); box-shadow: 0 0 8px rgba(255,106,19,0.6);
+  transition: width 0.25s var(--ease-snap);
+}
+.nav-links > li:not(.nav-cta) > a:hover::after, .nav-links > li:not(.nav-cta) > a.active::after { width: 100%; }
+.nav-links > li:not(.nav-cta) > a:hover { color: #fff; }
+.nav-links > li:not(.nav-cta) > a.active { color: var(--orange); }
+
+/* divider before the CTA */
+.nav-cta { margin-left: 0.6rem; padding-left: 1.4rem; position: relative; }
+.nav-cta::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1px; height: 24px; background: var(--gun-3); }
+/* the CTA button: force readable dark text on orange (was inheriting light grey) */
+.nav-cta .btn {
+  color: #140a02 !important; padding: 0.7rem 1.4rem; font-size: 0.84rem; letter-spacing: 0.08em;
+}
 
 .nav-toggle { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 44px; height: 44px; background: none; border: none; cursor: pointer; padding: 0; }
 .nav-toggle span { display: block; width: 26px; height: 2px; background: var(--bone); transition: transform 0.25s ease, opacity 0.2s ease, background 0.2s ease; }
