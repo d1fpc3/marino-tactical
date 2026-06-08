@@ -138,61 +138,112 @@
     });
   }
 
-  /* ---------------- PISTOL CURSOR + recoil + bullet holes ---------------- */
+  /* ---------------- PISTOL CURSOR + recoil + bullet holes + edge targets ---------------- */
   if (fine && !reduce) {
     document.documentElement.classList.add("cursor-on");
+
+    // Edge shooting targets (decor, desktop only)
+    var targetWrap = document.createElement("div");
+    targetWrap.className = "edge-targets";
+    targetWrap.setAttribute("aria-hidden", "true");
+    var targetSVG =
+      '<svg viewBox="0 0 120 120" width="120" height="120">' +
+        '<circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/>' +
+        '<circle cx="60" cy="60" r="44" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>' +
+        '<circle cx="60" cy="60" r="30" fill="none" stroke="var(--tgt-accent)" stroke-width="2" opacity="0.65"/>' +
+        '<circle cx="60" cy="60" r="16" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>' +
+        '<circle cx="60" cy="60" r="5" fill="var(--tgt-accent)" opacity="0.8"/>' +
+        '<path d="M60 0 V14 M60 106 V120 M0 60 H14 M106 60 H120" stroke="currentColor" stroke-width="1.5" opacity="0.45"/>' +
+      '</svg>';
+    targetWrap.innerHTML =
+      '<div class="edge-target edge-target--l">' + targetSVG + '</div>' +
+      '<div class="edge-target edge-target--r">' + targetSVG + '</div>';
+    document.body.appendChild(targetWrap);
+    var targets = targetWrap.querySelectorAll(".edge-target");
+
+    // Pistol cursor
     var pistol = document.createElement("div");
     pistol.className = "pistol-cursor";
     pistol.setAttribute("aria-hidden", "true");
-    // SVG: a side-profile pistol pointing right, with a muzzle-flash group
+    // Cleaner side-profile pistol (Glock-ish), barrel pointing right, muzzle = aim point
     pistol.innerHTML =
-      '<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<svg width="58" height="46" viewBox="0 0 58 46" fill="none" xmlns="http://www.w3.org/2000/svg">' +
         '<g class="pistol-body">' +
-          // muzzle flash (left of barrel tip... barrel points right so flash at far right)
-          '<g class="muzzle" transform="translate(40,17)">' +
-            '<path d="M0 0 L14 -5 L7 0 L14 5 Z" fill="#ffd24a"/>' +
-            '<path d="M0 0 L10 -2 L6 0 L10 2 Z" fill="#fff"/>' +
+          // muzzle flash at barrel tip (right)
+          '<g class="muzzle" transform="translate(50,11)">' +
+            '<path d="M0 0 L16 -6 L9 -1 L18 0 L9 1 L16 6 Z" fill="#ffce3a"/>' +
+            '<path d="M0 0 L11 -2.5 L7 0 L11 2.5 Z" fill="#fff"/>' +
+            '<circle cx="2" cy="0" r="3.5" fill="#ffe89a"/>' +
           '</g>' +
-          // slide / barrel
-          '<rect x="10" y="13" width="32" height="8" rx="1.5" fill="#23292e" stroke="#11151800" />' +
-          '<rect x="10" y="13" width="32" height="3" rx="1" fill="#39424a"/>' +
-          // front sight
-          '<rect x="38" y="10" width="2.4" height="4" fill="#23292e"/>' +
-          // ejection / detail
-          '<rect x="24" y="15" width="5" height="3" rx="0.5" fill="#11151a"/>' +
-          // frame + trigger guard
-          '<path d="M12 21 L30 21 L28 30 Q27 33 24 33 L20 33 Q17 33 16 30 Z" fill="#2b3238"/>' +
-          // grip (angled)
-          '<path d="M12 21 L20 21 L17 41 L9 41 Z" fill="#1a1f23" stroke="#39424a" stroke-width="0.6"/>' +
-          '<path d="M12 24 L18 24 M11.4 27 L17.4 27 M10.8 30 L16.8 30 M10.2 33 L15.8 33" stroke="#39424a" stroke-width="0.7"/>' +
+          // slide (top block) with subtle bevel
+          '<path d="M6 8 H50 a1.5 1.5 0 0 1 1.5 1.5 V14 a1.5 1.5 0 0 1 -1.5 1.5 H6 Z" fill="#222a22"/>' +
+          '<rect x="6" y="8" width="45.5" height="2.4" rx="1" fill="#454f3c"/>' +
+          // slide serrations (rear grip lines)
+          '<path d="M10 9.5 V14 M12.4 9.5 V14 M14.8 9.5 V14" stroke="#11150f" stroke-width="0.9" opacity="0.7"/>' +
+          // front + rear sights
+          '<rect x="46" y="5.5" width="2.4" height="3" fill="#222a22"/>' +
+          '<rect x="8" y="5.5" width="3" height="3" fill="#222a22"/>' +
+          // ejection port
+          '<rect x="30" y="9.8" width="7" height="3.2" rx="0.6" fill="#0c0f0a"/>' +
+          // frame under slide
+          '<path d="M8 15.5 H40 L37.5 21 H13 Z" fill="#2c3528"/>' +
+          // trigger guard (loop)
+          '<path d="M16 21 H30 a3 3 0 0 1 3 3 a3 3 0 0 1 -3 3 H22 a3 3 0 0 0 -3 3 Z" fill="none" stroke="#2c3528" stroke-width="2.4"/>' +
           // trigger
-          '<path d="M22 22 L22 27 L24 27 Z" fill="#6f7d49"/>' +
+          '<path d="M24 23.5 v4 a2 2 0 0 0 2 2 Z" fill="#9aa67a"/>' +
+          // grip (raked back)
+          '<path d="M8 15.5 H17 L13 42 a2 2 0 0 1 -2 1.6 H7 a1.5 1.5 0 0 1 -1.5 -2 Z" fill="#1a1f17"/>' +
+          // grip texture stippling
+          '<path d="M8.5 20 H15 M8 24 H14.4 M7.6 28 H13.8 M7.2 32 H13.2 M6.8 36 H12.6" stroke="#3a4430" stroke-width="0.8" opacity="0.8"/>' +
+          // magazine baseplate hint
+          '<rect x="6" y="42.5" width="7.5" height="2.5" rx="0.6" fill="#11150f"/>' +
         '</g>' +
       '</svg>';
     document.body.appendChild(pistol);
 
-    var px = window.innerWidth / 2, py = window.innerHeight / 2, shown = false;
+    // hotspot: the muzzle tip in viewBox coords is ~ (50, 11). At 58x46 render, offset so muzzle sits at the pointer.
+    var HX = 50, HY = 11;
+    var shown = false;
     document.addEventListener("mousemove", function (e) {
-      px = e.clientX; py = e.clientY;
-      pistol.style.transform = "translate(" + (px - 14) + "px," + (py - 16) + "px)";
+      pistol.style.transform = "translate(" + (e.clientX - HX) + "px," + (e.clientY - HY) + "px)";
       if (!shown) { pistol.classList.add("on"); shown = true; }
-      // hot state over interactive targets
       var t = e.target;
-      var interactive = t.closest && t.closest("a,button,.btn,.faq-q,input,select,textarea,.card");
+      var interactive = t.closest && t.closest("a,button,.btn,.faq-q,input,select,textarea,.card,.theme-toggle");
       pistol.classList.toggle("hot", !!interactive);
-    });
+    }, { passive: true });
     document.addEventListener("mouseleave", function () { pistol.classList.remove("on"); shown = false; });
 
-    // Fire: recoil + muzzle flash + bullet hole at click point
+    // Fire: recoil + muzzle flash + impact bullet hole + target pulse
+    var liveHoles = 0;
     document.addEventListener("mousedown", function (e) {
       pistol.classList.remove("kick"); void pistol.offsetWidth; pistol.classList.add("kick");
-      // bullet hole slightly ahead of the muzzle (right of cursor)
+
+      // pulse the edge targets
+      targets.forEach(function (tg) { tg.classList.remove("hit"); void tg.offsetWidth; tg.classList.add("hit"); });
+
+      if (liveHoles > 12) return; // bound cost on rapid clicking
+      // impact slightly ahead of the muzzle (right of cursor)
+      var hx = e.clientX + 20, hy = e.clientY - 4;
       var hole = document.createElement("div");
       hole.className = "bullet-hole";
-      hole.style.left = (e.clientX + 22) + "px";
-      hole.style.top = (e.clientY) + "px";
+      hole.style.left = hx + "px";
+      hole.style.top = hy + "px";
+      // cracks (randomized via index, no Math.random needed for variety here)
+      var cracks = "";
+      var angles = [12, 68, 128, 192, 240, 305];
+      for (var i = 0; i < angles.length; i++) {
+        var len = 9 + (i % 3) * 4;
+        cracks += '<span class="crack" style="transform:rotate(' + angles[i] + 'deg);width:' + len + 'px"></span>';
+      }
+      // debris specks
+      var debris = "";
+      for (var d = 0; d < 5; d++) {
+        debris += '<span class="speck" style="--a:' + (d * 72 + 20) + 'deg"></span>';
+      }
+      hole.innerHTML = '<span class="hole-core"></span>' + cracks + debris;
       document.body.appendChild(hole);
-      setTimeout(function () { hole.remove(); }, 3000);
+      liveHoles++;
+      setTimeout(function () { hole.remove(); liveHoles--; }, 3200);
     });
   }
 
