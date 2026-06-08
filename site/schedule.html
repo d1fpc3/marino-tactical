@@ -14,7 +14,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Oswald:wght@400;500;600;700&family=Barlow:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -26,13 +26,13 @@
       </a>
       <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
       <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="ccdw.html">DE CCDW</a></li>
-        <li><a href="permit-to-purchase.html">Permit to Purchase</a></li>
-        <li><a href="classes.html">Classes</a></li>
-        <li><a href="schedule.html" class="active">Schedule</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="index.html" data-num="01">Home</a></li>
+        <li><a href="ccdw.html" data-num="02">DE CCDW</a></li>
+        <li><a href="permit-to-purchase.html" data-num="03">Permit to Purchase</a></li>
+        <li><a href="classes.html" data-num="04">Classes</a></li>
+        <li><a href="schedule.html" class="active" data-num="05">Schedule</a></li>
+        <li><a href="faq.html" data-num="06">FAQ</a></li>
+        <li><a href="about.html" data-num="07">About</a></li>
         <li class="nav-cta"><a href="contact.html" class="btn btn--primary">Book a Class</a></li>
       </ul>
     </div>
@@ -42,7 +42,7 @@
     <section class="page-hero">
       <div class="container">
         <div class="breadcrumb"><a href="index.html">Home</a> / Upcoming Classes</div>
-        <h1>Upcoming Classes</h1>
+        <h1 class="stencil">Upcoming Classes</h1>
         <p>Reserve your seat for an upcoming class in Felton, Delaware. Space is limited and dates fill quickly.</p>
       </div>
     </section>
@@ -133,8 +133,8 @@
           <a class="brand" href="index.html"><span class="brand-mark">MT</span><span class="brand-name">Marino Tactical<span>Train For The Fight</span></span></a>
           <p>Professional firearms and concealed-carry training for the law-abiding citizens of Delaware and surrounding states. Felton, Delaware.</p>
         </div>
-        <div><h4>Courses</h4><ul><li><a href="ccdw.html">Delaware CCDW</a></li><li><a href="permit-to-purchase.html">Permit to Purchase</a></li><li><a href="classes.html">All Classes</a></li><li><a href="schedule.html">Upcoming Schedule</a></li></ul></div>
-        <div><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="faq.html">FAQ</a></li><li><a href="resources.html">Resources &amp; Applications</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+        <div><h4>Courses</h4><ul><li><a href="ccdw.html" data-num="02">Delaware CCDW</a></li><li><a href="permit-to-purchase.html" data-num="03">Permit to Purchase</a></li><li><a href="classes.html" data-num="04">All Classes</a></li><li><a href="schedule.html" data-num="05">Upcoming Schedule</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="about.html" data-num="07">About</a></li><li><a href="faq.html" data-num="06">FAQ</a></li><li><a href="resources.html">Resources &amp; Applications</a></li><li><a href="contact.html">Contact</a></li></ul></div>
       </div>
       <div class="footer-bottom">
         <span>&copy; <span id="year">2026</span> Marino Tactical Training, Inc. All rights reserved.</span>
