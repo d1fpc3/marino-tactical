@@ -1,5 +1,32 @@
+# robots.txt for Marino Tactical Training, Inc.
+# https://trainforthefight.com/
+
 User-agent: *
 Allow: /
-Disallow: /thank-you.html
 
-Sitemap: https://drew-preview.d1fpc3.com/sitemap.xml
+# AI crawlers - allow for citation visibility in ChatGPT, Claude, Perplexity, Gemini
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://trainforthefight.com/sitemap.xml

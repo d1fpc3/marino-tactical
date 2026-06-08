@@ -1,42 +1,38 @@
-# Personal Fitness, Dr. Drew DPT Pitch Build
+# Marino Tactical Training | trainforthefight.com
 
-Pitch deliverable for `@not_ur_average_dr` (Dr. Drew, DPT). Four-surface demo built frontend-first with mocked data. Backend wiring is Phase 2, see `PHASE2_BACKEND.md`.
+Static marketing site for Marino Tactical Training, Inc., a Delaware firearms and concealed-carry training company (Felton, DE) led by Kirk Marino.
 
-## Surfaces
+> This repo previously held the Dr. Drew DPT pitch site. It was hard-replaced with the Marino Tactical site on 2026-06-08. The old code is recoverable from git history before that commit.
 
-| Surface | Path | Demo URL (TBD) |
-|---|---|---|
-| Marketing site | `site/` | `drew-preview.d1fpc3.com` |
-| Portal + Admin SPA | `app/` | `drew-app-preview.d1fpc3.com` |
-| PWA (installable) | from `app/` | same URL, Add to Home Screen |
-| iOS / Android native shells | `ios/`, `android/` | Phase 1.5, post-signature |
+## Stack
 
-## Local dev
+Static HTML, one shared `styles.css` + `app.js`, no build step, no framework. Oswald + Source Sans 3 (Google Fonts). Clean professional navy/steel/charcoal with a gold accent. Glass nav, kinetic hero, bento course grid, embedded Felton, DE location map.
 
-**Marketing site** (static, no build):
-```
-cd site
-# open index.html directly, or:
-npx serve .
-```
+## Site files
 
-**Portal app** (Vite):
-```
-cd app
-npm install
-npm run dev
-```
+All web files live in `site/`:
 
-## Deploy
+| File | Purpose |
+|------|---------|
+| `index.html` | Home: hero, courses (bento), why-train, price band, location map, CTA |
+| `ccdw.html` | Delaware CCDW permit training + cost breakdown |
+| `permit-to-purchase.html` | Delaware Handgun Permit-to-Purchase training |
+| `classes.html` | Full class descriptions + required equipment |
+| `schedule.html` | Upcoming class dates and booking policy |
+| `faq.html` | FAQs (with FAQPage schema) |
+| `about.html` | About the company and instructor |
+| `resources.html` | Permit applications + law references + links |
+| `contact.html` | Contact info, mailto form, location map |
 
-Both surfaces auto-deploy to Hostinger on push to `main` via GitHub Actions FTP.
+## Deployment
 
-Secrets needed in repo settings: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_APP_SERVER_DIR`, `FTP_SITE_SERVER_DIR`.
+Auto-deploys to Hostinger via FTP on push to `main` (`.github/workflows/deploy-site.yml`, SamKirkland FTP-Deploy-Action), deploying the `site/` folder. Triggers only when `site/**` changes.
 
-## Phase 2 swap-in checklist
+Required repo secrets: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, and `FTP_SITE_SERVER_DIR` (the domain's `public_html` path). The first three are set; confirm `FTP_SITE_SERVER_DIR` points at the trainforthefight.com `public_html` before relying on the deploy.
 
-When Drew signs, search for `// TODO: Supabase` across `app/src/` and follow `PHASE2_BACKEND.md`. Every mocked data source has a marked swap-in point.
+## To finalize before launch
 
-## Repo
-
-`d1fpc3/personalfitness` on GitHub, branch `main`.
+- Confirm `FTP_SITE_SERVER_DIR` secret = trainforthefight.com public_html path on Hostinger.
+- Verify the public email address (placeholder `info@marinotactical.com`).
+- Replace placeholder hero/media panels with real instructor + range photos.
+- Confirm current class dates on `schedule.html`.
