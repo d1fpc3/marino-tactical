@@ -30,9 +30,15 @@ Auto-deploys to Hostinger via FTP on push to `main` (`.github/workflows/deploy-s
 
 Required repo secrets: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, and `FTP_SITE_SERVER_DIR` (the domain's `public_html` path). The first three are set; confirm `FTP_SITE_SERVER_DIR` points at the trainforthefight.com `public_html` before relying on the deploy.
 
+## Temporary preview domain
+
+Currently served on the Hostinger preview domain `mistyrose-rhinoceros-214854.hostingersite.com`. All canonical/OG/sitemap/schema URLs point there, and every page carries `<meta name="robots" content="noindex, nofollow">` plus a `Disallow: /` robots.txt so search engines don't index the temp domain.
+
+**When the real production domain is connected:** swap the domain across `site/*.html`, `sitemap.xml`, `robots.txt`, and the JSON-LD; remove the noindex meta tags; and restore the Allow + AI-crawler rules in robots.txt.
+
 ## To finalize before launch
 
-- Confirm `FTP_SITE_SERVER_DIR` secret = trainforthefight.com public_html path on Hostinger.
+- Confirm `FTP_SITE_SERVER_DIR` secret / `public_html` path on Hostinger (currently using the `/public_html/` fallback, which works).
 - Verify the public email address (placeholder `info@marinotactical.com`).
 - Replace placeholder hero/media panels with real instructor + range photos.
 - Confirm current class dates on `schedule.html`.

@@ -1,32 +1,7 @@
 # robots.txt for Marino Tactical Training, Inc.
-# https://trainforthefight.com/
+# TEMPORARY PREVIEW DOMAIN: indexing disabled until the production domain is live.
+# When the real domain is connected, restore the Allow rules + AI crawler block
+# and remove the noindex meta tags from each page's <head>.
 
 User-agent: *
-Allow: /
-
-# AI crawlers - allow for citation visibility in ChatGPT, Claude, Perplexity, Gemini
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Applebot-Extended
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
-Sitemap: https://trainforthefight.com/sitemap.xml
+Disallow: /
