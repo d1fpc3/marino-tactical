@@ -43,7 +43,10 @@
     else requestAnimationFrame(function () { requestAnimationFrame(function () { loaders.forEach(function (el) { el.classList.add("in"); }); }); });
   }
 
-  /* ---------------- Reveal on scroll (+ stagger, dividers) ---------------- */
+  /* ---------------- Reveal on scroll (+ stagger, dividers) ----------------
+     Robust: threshold 0 (any pixel triggers, so tall sections never get
+     skipped), reveal anything already in view on init, and a final safety
+     sweep so content can never be left invisible if the observer misfires. */
   var reveals = document.querySelectorAll(".reveal, .reveal-stagger, .tracer-divider");
   if (reveals.length) {
     if (reduce || !("IntersectionObserver" in window)) {
@@ -51,8 +54,14 @@
     } else {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
-      reveals.forEach(function (el) { io.observe(el); });
+      }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
+      reveals.forEach(function (el) {
+        // Only below-fold elements get .pre (start hidden) + animate in on scroll.
+        // In-view elements are never hidden — they just stay visible.
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) return;
+        el.classList.add("pre");
+        io.observe(el);
+      });
     }
   }
 
